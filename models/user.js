@@ -15,12 +15,7 @@ var UserSchema = mongoose.Schema({
     country  :{ type: String  }, 
     password :{ type: String },
     hotelname:{ type: String },
-    room     :{ type: Number},
-    children :{ type: Number},
-    Adults   :{ type: Number},
-    available:{ type: Boolean, default: true },
-    checkin  :{type : Date},
-    checkout :{ type: Date },
+   
 
  
 });

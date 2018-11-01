@@ -13,10 +13,11 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/explorebelihuloya');
 var db = mongoose.connection;
 
-var routes = require('./routes/index');
+//var routes = require('./routes/index');
 var users = require('./routes/users');
 var admins = require('./routes/admins');
-var api =  require('./routes/api');
+var rooms =  require('./routes/rooms');
+
 // Init App
 
 var app = express();
@@ -85,9 +86,10 @@ app.use(function(req, res, next){
     next();
 });
 
-app.use('/', routes);
+//app.use('/', routes);
 app.use('/users', users);
 app.use('/admins', admins);
+app.use('./rooms', rooms)
 //set port
 
 app.set('port', (process.env.PORT || 3000));

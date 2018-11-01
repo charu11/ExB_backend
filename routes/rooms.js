@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
-var Admin = require('../models/admin');
+var Room = require('../models/room');
 
 
-// admin log in
+// room book
 
-router.get('/adminLogin', function(req, res){
-    res.render('adminLogin')
+router.get('/reservation', function(req, res){
+    res.render('reservation')
 });
 
-router.post('/adminLogin', function(req, res){
-    Admin.create(req.body, function(err){
+router.post('/reservation', function(req, res){
+    Room.create(req.body, function(err){
         if(err){
             res.status(400).send(err)
         }
@@ -21,6 +21,7 @@ router.post('/adminLogin', function(req, res){
     })
 });
 
+// reservation
 
 
 

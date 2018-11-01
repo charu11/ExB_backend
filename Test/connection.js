@@ -10,3 +10,14 @@ mongoose.connection.once('open', function(){
 }).on('error', function(error){
     console.log('Connection error',error);
 });
+
+// connect to front end
+
+var cors = require('cors');
+app.use(
+    cors(
+      {
+          origin:'http://localhost:4200'
+      }  
+    )
+);
