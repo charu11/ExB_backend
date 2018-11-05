@@ -13,10 +13,10 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/explorebelihuloya');
 var db = mongoose.connection;
 
-//var routes = require('./routes/index');
+var routes = require('./routes/index');
 var users = require('./routes/users');
 var admins = require('./routes/admins');
-var rooms =  require('./routes/rooms');
+
 
 // Init App
 
@@ -36,10 +36,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cookieParser());
 
-// initialize the routes
-//app.use('/api', require('./routes/api'));
-
-// set static Folder
 
 app.use( express.static(path.join(__dirname, 'public')));
 
@@ -86,10 +82,10 @@ app.use(function(req, res, next){
     next();
 });
 
-//app.use('/', routes);
+app.use('/', routes);
 app.use('/users', users);
 app.use('/admins', admins);
-app.use('./rooms', rooms)
+
 //set port
 
 app.set('port', (process.env.PORT || 3000));

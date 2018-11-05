@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var Admin = require('../models/admin');
+var Admin = require('../models/admin.js');
 
 
 // admin log in

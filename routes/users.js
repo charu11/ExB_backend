@@ -4,6 +4,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user.js');
+var Room = require('../models/room.js');
+
 
 // register
 
@@ -29,12 +31,6 @@ router.post('/login', function(req, res){
  
 
 
-
-
-router.get('/reservation', function(req, res){
-    res.render('reservation');
-
-});
 // register User
 
 router.post('/register', function(req, res){
@@ -80,54 +76,59 @@ var errors = req.validationErrors();
         res.redirect('/users/reservation');
     });
      req.flash('success_msg', 'you are registered now you can login');
-s
+
   }
 
 });  
 
-passport.use(new LocalStrategy(
-    function(username, password, done){
-    User.getUserByUsername(username, function(err, User){
-        if(err) throw err; 
-        if(!User){
-            return done(null, false, {message: 'unknown User'});       
-        }
+           // reservation
 
-        User.comparePassword(password, User.password, function(err, isMatch){
-            if(err) throw err;
-            if(isMatch){
-                return done(null, User);
-            }else{
-                return done(null, {message: 'Invalid Password'});
-            }
-        });
-    });
-}));
-
-passport.serializeUser(function(User, done){
-    done(null, User.id);
+router.get('/reservation', function(req, res){
+    res.render('reservation');
 });
-passport.deserializeUser(function(id, done){
-    User.getUserById(id, function(err, User){
-        done(err, User);
-    });
-});
-router.post('/login',passport.authenticate('local', {successRedirect: '/users/reservation', failureRedirect: '/users/login', failureFlash: true}));
-
-//passport.authenticate('local', {successRedirect: '/users/reservation', failureRedirect: '/users/login', failureFlash: true}) 
-
-
-// reservation
 
 router.post('/reservation', function(req, res){
-    var checkin = req.body.checkin;
-    var checkout = req.body.checkout;
-    var rooms = req.body.rooms;
-    var adults = req.body.adults;
-    var children = req.body.children;
+   
+        var checkIn = req.body.checkIn;
+        var checkOut = req.body.checkOut;
+        var room = req.body.room;
+        var adults = req.body.adults;
+        var children = req.body.children;
+        
+        // reservation validation 
 
-    console.log(req.body);
-});    
+        req.checkBody('checkIn', 'checkIn is required').notEmpty();
+        req.checkBody('checkOut', 'checkOut is required').notEmpty();
+        req.checkBody('room', 'room is required').notEmpty();
+        req.checkBody('children', 'children is required').notEmpty();
+  
+        var errors = req.validationErrors();
+
+   if(errors){
+       res.render('reservation',{
+           errors:errors
+       });
+   }else{
+    var newRoom = new Room({
+        checkIn: checkIn,
+        checkOut: checkOut,
+        room: room,
+        adults: adults,
+        children: children,
+    
+});
+
+Room.createRoom(newRoom, function(err, Room){
+    if(err) throw err;
+    console.log(Room);
+
+    res.redirect('/users');
+});
+
+
+}
+
+});  
 
 module.exports = router;
 
